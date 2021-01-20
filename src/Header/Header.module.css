@@ -1,0 +1,7 @@
+.displays
+{
+    display: flex;
+    flex-direction: row;
+    font-size: xx-large;
+    color: #1200ff;
+}

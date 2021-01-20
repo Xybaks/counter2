@@ -1,0 +1,49 @@
+.display
+{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+
+    width: 370px;
+    height: 250px;
+    margin: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+
+    border-radius: 10px;
+    background-color: #61dafb;
+}
+
+.valueDisplay
+{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 320px;
+    height: 160px;
+    margin: 10px 10px 10px;
+    color: darkblue;
+    border: 5px solid darkred;
+    border-radius: 10px;
+    background-color: yellow;
+}
+
+.button
+{
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: center;
+
+    width: 325px;
+    margin-bottom: 5px;
+
+    border-radius: 10px;
+    background-color: yellow;
+}
+.red{
+    color: red;
+    font-size: xxx-large;
+    font-style:oblique;
+}
