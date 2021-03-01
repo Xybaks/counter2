@@ -1,85 +1,95 @@
 import s from "./NewDisplay.module.css";
-import {Button} from "../Button/Button";
-import React from "react";
-import {OnDisplayValue} from "../OnDisplayValue/OnDisplayValue";
-import {NumberInput} from "../NumberInput/NumberInput";
+import Button from "../Button/Button";
+import React, {useCallback} from "react";
+import OnDisplayValue from "../OnDisplayValue/OnDisplayValue";
+import NumberInput from "../NumberInput/NumberInput";
+import {useDispatch, useSelector} from "react-redux";
+import {AppRootStateType} from "../state/reduxStore/store";
+import {
+    CounterStateType, setDisplay, setInitialValue,
+    setLocalStorageCounts,
+    setMaxCount,
+    setMinCount,
+    setPresentCount
+} from "../state/counterReducer";
 
 
-type NewDisplayType = {
-    error: boolean
-    minCount: number
-    maxCount: number
-    incReset: boolean
-    presentCount: number
-    setDisabled: boolean
-    resetDisabled: boolean
-    valuesEntered: boolean
-    setDisplayCall: () => void
-    setInitialValue: () => void
-    setMinCountCallback: (minCount: number) => void
-    setMaxCountCallback: (maxCount: number) => void
-    setCounts: (minCount: number, maxCount: number) => void
-    setPresentCountCallback: (presentCount: number) => void
-}
+export const NewDisplay = () => {
+// достаем наш state из редоксовского стора )(хуком useSelector)
+    const state = useSelector<AppRootStateType, CounterStateType>(state => state.counterState)
+// достаем наш  dispatch   из редоксовского стора (хуком useDispatch)
+    const dispatch = useDispatch();
+// отрисовка ошибки на поле ввода maxCount
+    let maxCountError = state.error && (state.minCount > -1)
+    // наши коллбэки, в которых вызываем диспатч с помощью ActionCreators
+    const setPresentCountCallback= useCallback(  () => {
+        dispatch(setPresentCount(state.presentCount))
+    },[dispatch,state.presentCount])
 
-export const NewDisplay: React.FC<NewDisplayType> = (props) => {
+    const setInitialValueCallback = useCallback(() => {
+        dispatch(setInitialValue())
+    },[dispatch])
 
-    const setPresentCountCallback = () => {
-        props.setPresentCountCallback(props.presentCount)
-    }
-// при увеличении minCount
-    let maxCountError = props.error && props.minCount > -1
-    // handler нажатия на кнопку SET
+    const setCountsCallback = useCallback(() => {
+        dispatch(setLocalStorageCounts(state.minCount, state.maxCount))
+        dispatch(setInitialValue())
+    },[dispatch,state.minCount, state.maxCount])
 
-    const setInitialValue = () => {
-        props.setInitialValue()
-    }
-    const setCounts = () => {
-        props.setCounts(props.minCount, props.maxCount)
-    }
-// return
-    if (props.valuesEntered) {
-        return (<div className={s.display}>
+    const setMaxCountCallback = useCallback((value: number) => {
+        dispatch(setMaxCount(value))
+    }, [dispatch])
+
+    const setMinCountCallback = useCallback((value: number) => {
+        dispatch(setMinCount(value))
+    },[dispatch])
+
+    const setDisplayCallback = useCallback(() => {
+        dispatch(setDisplay())
+    },[dispatch])
+
+    return (
+        state.isValuesNotEntered
+            ? //  return при уже  заданных значениях
+            <div className={s.display}>
                 <div className={s.valueDisplay}>
                     <NumberInput
                         title="max value"
                         error={maxCountError}
-                        value={props.maxCount}
-                        onChangeHandler={props.setMaxCountCallback}/>
+                        value={state.maxCount}
+                        onChangeHandler={setMaxCountCallback}/>
                     <NumberInput
-                        error={props.error}
+                        error={state.error}
                         title="min value"
-                        value={props.minCount}
-                        onChangeHandler={props.setMinCountCallback}/>
+                        value={state.minCount}
+                        onChangeHandler={setMinCountCallback}/>
                 </div>
 
-                    <div className={s.button}>
-                        <Button
-                            buttonName="set"
-                            onClickHandler={setCounts}
-                            disabled={props.setDisabled}/>
-                    </div>
+                <div className={s.button}>
+                    <Button
+                        buttonName="set"
+                        onClickHandler={setCountsCallback}
+                        disabled={state.setDisabled}/>
+                </div>
             </div>
-    )
-    } else {
-        return (<div className={s.display}>
-                        <OnDisplayValue
-                            presentCount={props.presentCount}
-                            maxCount={props.maxCount}
-                            valuesEntered={props.valuesEntered}
-                        />
+            : //  return при вводе значений
+            <div className={s.display}>
+                <OnDisplayValue
+                    presentCount={state.presentCount}
+                    maxCount={state.maxCount}
+                />
                 <div className={s.button}>
                     <Button buttonName="Inc"
                             onClickHandler={setPresentCountCallback}
-                            disabled={props.incReset}/>
+                            disabled={state.incReset}/>
                     <Button buttonName="reset"
-                            onClickHandler={setInitialValue}
-                            disabled={props.resetDisabled}/>
+                            onClickHandler={setInitialValueCallback}
+                            disabled={state.resetDisabled}/>
                     <Button buttonName="set"
-                            onClickHandler={props.setDisplayCall}
+                            onClickHandler={setDisplayCallback}
+                            disabled={state.setDisabled}
                     />
                 </div>
             </div>
-        )
-    }
+    )
+
 }

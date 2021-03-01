@@ -10,10 +10,13 @@ type ButtonType ={
 }
 
 
-export const Button: React.FC<ButtonType> = (props)=>{
+const Button: React.FC<ButtonType> = (props)=>{
+
     return(
         <div>
        <button className={s.button} onClick={props.onClickHandler} disabled={props.disabled}>{props.buttonName} </button>
         </div>
     )
 }
+
+export default React.memo(Button)

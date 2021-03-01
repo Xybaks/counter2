@@ -6,7 +6,8 @@ type NumberInputType = {
     error:boolean
     onChangeHandler: (value: number) => void
 }
-export const NumberInput = (props: NumberInputType) => {
+ const NumberInput = (props: NumberInputType)  =>{
+
     const setMaxCount = (e: ChangeEvent<HTMLInputElement>) => {
         if (e.currentTarget) {
             props.onChangeHandler(Number(e.currentTarget.value))
@@ -22,3 +23,4 @@ export const NumberInput = (props: NumberInputType) => {
         </div>
     )
 }
+export default React.memo(NumberInput)
