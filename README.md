@@ -1,4 +1,5 @@
 Counter v2!  //    training in React
+
 I applied:
 0. TypeScript
 1. Redux
