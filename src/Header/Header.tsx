@@ -85,7 +85,6 @@ export const Header = () => {
     // функция вызова дисплея настройки значений
     const setDisplayCall = () => {
         setValuesEntered(true)
-
     }
     return (
         <div>
