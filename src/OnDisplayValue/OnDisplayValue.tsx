@@ -8,7 +8,7 @@ type OnDisplayValueType = {
 
 
 const OnDisplayValue:React.FC<OnDisplayValueType>=(props)=> {
-    
+
     return (
       props.presentCount === props.maxCount
             ? <div className={s.valueDisplay}><div className={s.red}> {props.presentCount}</div></div>

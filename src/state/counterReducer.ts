@@ -90,9 +90,11 @@ export const counterReducer = (state: CounterStateType = initialState, action: A
         case SET_INITIAL_VALUE: {
             return {...state, presentCount: state.minCount, isValuesNotEntered: false, incReset: false}
         }
+        //выбор отображаемого дисплея (основной/ для становки значений)
         case SET_DISPLAY: {
             return {...state, isValuesNotEntered: true}
         }
+        // добаление в localStorage
         case SET_LOCALSTORAGE_COUNTS: {
             try {
                 localStorage.setItem("minCount", action.minCount.toString())
