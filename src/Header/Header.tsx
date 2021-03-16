@@ -6,7 +6,7 @@ import {NewDisplay} from "../NewDisplay/NewDisplay";
 export const Header = () => {
     return (
         <div>
-            <h1> Counter v2</h1>
+            <h1> Counter</h1>
             <div className={s.displays}>
                 <NewDisplay/>
             </div>

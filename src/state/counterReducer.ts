@@ -7,7 +7,7 @@ export const SET_LOCALSTORAGE_COUNTS = 'SET-LOCALSTORAGE-COUNTS'
 
 export type CounterStateType = typeof initialState
 export type ActionsTypes = setMinCountActionType | setMaxCountActionType | setPresentCountActionType
-    | setInitialValueActionType | setDisplayActionType | setLocalStorageCountsActionType
+    | setInitialValueActionType | setDisplayActionType
 
 //функция пролучения из локалстораджа значений с типизацией получаемого объекта
 const getCountsFromLocalStorage = (): {minCountLS: number, maxCountLS: number } => {
@@ -95,14 +95,6 @@ export const counterReducer = (state: CounterStateType = initialState, action: A
             return {...state, isValuesNotEntered: true}
         }
         // добаление в localStorage
-        case SET_LOCALSTORAGE_COUNTS: {
-            try {
-                localStorage.setItem("minCount", action.minCount.toString())
-                localStorage.setItem("maxCount", action.maxCount.toString())
-            } finally {
-            }
-            return state
-        }
         default:
             return state
     }
@@ -114,12 +106,11 @@ export const setMaxCount = (maxCount: number) => ({type: SET_MAX_COUNT, maxCount
 export const setPresentCount = (presentCount: number) => ({type: SET_PRESENT_COUNT, presentCount} as const)
 export const setInitialValue = () => ({type: SET_INITIAL_VALUE} as const)
 export const setDisplay = () => ({type: SET_DISPLAY} as const)
-export const setLocalStorageCounts = (minCount: number, maxCount: number) =>
-    ({type: SET_LOCALSTORAGE_COUNTS, minCount, maxCount} as const)
+
 
 type setMinCountActionType = ReturnType<typeof setMinCount>
 type setMaxCountActionType = ReturnType<typeof setMaxCount>
 type setPresentCountActionType = ReturnType<typeof setPresentCount>
 type setInitialValueActionType = ReturnType<typeof setInitialValue>
 type setDisplayActionType = ReturnType<typeof setDisplay>
-type setLocalStorageCountsActionType = ReturnType<typeof setLocalStorageCounts>
+

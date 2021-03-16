@@ -7,10 +7,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../state/reduxStore/store";
 import {
     CounterStateType, setDisplay, setInitialValue,
-    setLocalStorageCounts,
-    setMaxCount,
-    setMinCount,
-    setPresentCount
+    setMaxCount, setMinCount, setPresentCount
 } from "../state/counterReducer";
 
 
@@ -22,18 +19,23 @@ export const NewDisplay = () => {
 // отрисовка ошибки на поле ввода maxCount
     let maxCountError = state.error && (state.minCount > -1)
     // наши коллбэки, в которых вызываем диспатч с помощью ActionCreators
-    const setPresentCountCallback= useCallback(  () => {
+    const setPresentCountCallback = useCallback(() => {
         dispatch(setPresentCount(state.presentCount))
-    },[dispatch,state.presentCount])
+    }, [dispatch, state.presentCount])
 
     const setInitialValueCallback = useCallback(() => {
         dispatch(setInitialValue())
-    },[dispatch])
+    }, [dispatch])
 
     const setCountsCallback = useCallback(() => {
-        dispatch(setLocalStorageCounts(state.minCount, state.maxCount))
         dispatch(setInitialValue())
-    },[dispatch,state.minCount, state.maxCount])
+        //вносим в локалсторадж значения при нажатии на  set
+        try {
+            localStorage.setItem("minCount", state.minCount.toString())
+            localStorage.setItem("maxCount", state.maxCount.toString())
+        } finally {
+        }
+    }, [dispatch, state.minCount, state.maxCount])
 
     const setMaxCountCallback = useCallback((value: number) => {
         dispatch(setMaxCount(value))
@@ -41,11 +43,11 @@ export const NewDisplay = () => {
 
     const setMinCountCallback = useCallback((value: number) => {
         dispatch(setMinCount(value))
-    },[dispatch])
+    }, [dispatch])
 
     const setDisplayCallback = useCallback(() => {
         dispatch(setDisplay())
-    },[dispatch])
+    }, [dispatch])
 
     return (
         state.isValuesNotEntered
@@ -93,3 +95,4 @@ export const NewDisplay = () => {
     )
 
 }
+
